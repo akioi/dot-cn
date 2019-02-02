@@ -78,7 +78,7 @@ def getPagesURL(name):
 
 def CreateRepo(name):
 	print('Creating Repo %s'%(name))
-	Postdata={'name' : str(data['name']),'description' : str(data['description']), 'homepage' : str('https://%s'%(getPagesURL(name)))}
+	Postdata={'name' : str(name),'description' : str(data['description']), 'homepage' : str('https://%s'%(getPagesURL(name)))}
 	PostURL='https://api.github.com/orgs/%s/repos' % (Owner)
 
 	res=requests.post(url=PostURL,data=json.dumps(Postdata),headers=headers)
@@ -105,7 +105,7 @@ def CloneRepo(name):
 	CloneURL = CheckIfRepoCreated(name)
 	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' ./{Reponame}/.git/config" .format(   #Only Support Linux :(
+	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
 		CURL = CloneURL,
 		Reponame = name,
@@ -132,6 +132,7 @@ def Cleanup():
 	os.system("rm -rf html")
 
 if __name__ == '__main__':
+
 	mkdir(os.getcwd() + '/html/')
 	#LoginGithub()
 	for filename in os.listdir('src'):
