@@ -132,18 +132,19 @@ def Cleanup():
 	os.system("rm -rf html")
 
 
-Cleanup()
 #LoginGithub()
-for filename in os.listdir('src'):
-	print('Processing %s'%(filename))
-	text = read_file('src/%s' % filename)
-	data = yaml.load(text)
-	data['short_name'] = filename.split('.')[0]
-	for filename in os.listdir('themes/%s' % data['theme']):
-		CloneRepo(data['short_name'])
-		text = read_file('themes/%s/%s' % (data['theme'], filename))
-		write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
-	deploy(data['short_name'])
-Cleanup()
+
+for num in range(1,2):
+	for filename in os.listdir('src'):
+		print('Processing %s'%(filename))
+		text = read_file('src/%s' % filename)
+		data = yaml.load(text)
+		data['short_name'] = filename.split('.')[0]
+		for filename in os.listdir('themes/%s' % data['theme']):
+			CloneRepo(data['short_name'])
+			text = read_file('themes/%s/%s' % (data['theme'], filename))
+			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
+		deploy(data['short_name'])
+
 		
 #CheckIfRepoCreated(input())
