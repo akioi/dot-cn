@@ -1,4 +1,8 @@
-# akioi.cn
+# akioi.cn  
+![status](https://travis-ci.org/akioi/dot-cn.svg?branch=master)
+
+------
+
 
 一个恶搞项目，纯为好玩，请勿当真。
 
