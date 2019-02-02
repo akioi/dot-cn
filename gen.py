@@ -1,5 +1,4 @@
 #Github Access Build On Github API v3 
-#Deploy Code by abc1763613206
 import requests
 import os, yaml
 import json
@@ -132,19 +131,19 @@ def Cleanup():
 	print('Cleaning up......\n')
 	os.system("rm -rf html")
 
-if __name__ == '__main__':
-	Cleanup()
-	#LoginGithub()
-	for filename in os.listdir('src'):
-		print('Processing %s'%(filename))
-		text = read_file('src/%s' % filename)
-		data = yaml.load(text)
-		data['short_name'] = filename.split('.')[0]
-		for filename in os.listdir('themes/%s' % data['theme']):
-			CloneRepo(data['short_name'])
-			text = read_file('themes/%s/%s' % (data['theme'], filename))
-			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
-		deploy(data['short_name'])
-	Cleanup()
+
+Cleanup()
+#LoginGithub()
+for filename in os.listdir('src'):
+	print('Processing %s'%(filename))
+	text = read_file('src/%s' % filename)
+	data = yaml.load(text)
+	data['short_name'] = filename.split('.')[0]
+	for filename in os.listdir('themes/%s' % data['theme']):
+		CloneRepo(data['short_name'])
+		text = read_file('themes/%s/%s' % (data['theme'], filename))
+		write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
+	deploy(data['short_name'])
+Cleanup()
 		
 #CheckIfRepoCreated(input())
