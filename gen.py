@@ -131,10 +131,9 @@ def Cleanup():
 	print('Cleaning up......\n')
 	os.system("rm -rf html")
 
-
-#LoginGithub()
-
-for num in range(1,2):
+if __name__ == '__main__':
+	mkdir(os.getcwd() + '/html/')
+	#LoginGithub()
 	for filename in os.listdir('src'):
 		print('Processing %s'%(filename))
 		text = read_file('src/%s' % filename)
@@ -145,6 +144,5 @@ for num in range(1,2):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
 			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
 		deploy(data['short_name'])
-
 		
 #CheckIfRepoCreated(input())
