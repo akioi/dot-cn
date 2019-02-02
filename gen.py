@@ -118,7 +118,7 @@ def CloneRepo(name):
 
 def deploy(name):   # build pages at the moment?
 	print('Deploying %s\n'%(name))
-	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update' && git checkout -b gh-pages && git push origin gh-pages --force > secret.txt ".format(
+	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update' && git remote rm gh-pages && git checkout -b gh-pages && git push && git push origin gh-pages --force > secret.txt ".format(
 		path = os.getcwd() + '/html/%s' % name,
 		Account = PusherAccount,
 		Email = PusherEmail,
