@@ -5,7 +5,6 @@ python:
   - 3.6
 install:
   - pip install requests
-  - pip install json
   - pip install yaml
 script:
   - set -e
