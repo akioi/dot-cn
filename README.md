@@ -1,2 +1,1 @@
-# dot-cn
-%
+# akioi.cn
