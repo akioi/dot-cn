@@ -75,17 +75,9 @@ def getPagesURL(name):
 	else:
 		PagesURL='%s.%s'%(name,Webroot)
 	return PagesURL
-def DeleteRepo(name):  #Experimental!
-    print('Deleting Repo %s......'%(name))
-    PostURL='https://api.github.com/repos/%s/%s' % (Owner,name)
-    res=requests.delete(url=PostURL,headers=headers)
-    print(str(res.status_code) +'\n')
 
-
-def CreateRepo(name,IfCreated):
-	if(IfCreated==1) :
-		DeleteRepo(name)
-	print('Creating Repo %s\n'%(name))
+def CreateRepo(name):
+	print('Creating Repo %s'%(name))
 	Postdata={'name' : str(name),'description' : str(data['description']), 'homepage' : str('https://%s'%(getPagesURL(name)))}
 	PostURL='https://api.github.com/orgs/%s/repos' % (Owner)
 
@@ -96,21 +88,16 @@ def CreateRepo(name,IfCreated):
 def CheckIfRepoCreated(name):
 	print('Checking Repo %s\n'%(name))
 	# GET repo 信息 ， 检测状态码 404 为未创建
-	# 临时解决方案：先删再建岂不美哉
 	r = requests.get(url = 'https://api.github.com/repos/%s/%s' % (Owner,name), headers = headers)
-	print (r.status_code)
+	#print (r.status_code)
 	if(r.status_code==404): # Not Created
-		CloneURL = CreateRepo(name,0)
+		CloneURL = CreateRepo(name)
 	elif(r.status_code==200):# Created
-		#CloneURL = FromRequestsgetCloneURL(r)
-		CloneURL = CreateRepo(name,1)
+		CloneURL = FromRequestsgetCloneURL(r)
 	else:
 		print('Unknown Error!\n')
 		print(r.text+'\n')
-		
-	
 	return CloneURL
-
 		
 
 
@@ -131,7 +118,7 @@ def CloneRepo(name):
 
 def deploy(name):   # build pages at the moment?
 	print('Deploying %s\n'%(name))
-	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update'  && git checkout -b gh-pages && git push && git push origin gh-pages --force > secret.txt ".format(
+	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update' && git remote rm gh-pages && git checkout -b gh-pages && git push && git push origin gh-pages --force > secret.txt ".format(
 		path = os.getcwd() + '/html/%s' % name,
 		Account = PusherAccount,
 		Email = PusherEmail,
@@ -152,7 +139,7 @@ if __name__ == '__main__':
 		text = read_file('src/%s' % filename)
 		data = yaml.load(text)
 		data['short_name'] = filename.split('.')[0]
-		print('Processing %s , Shortname : %s\n'%(filename,data['short_name']))
+		print('Processing %s , Shortname : %s'%(filename,data['short_name']))
 		CloneRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
