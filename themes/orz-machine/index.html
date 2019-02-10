@@ -1,0 +1,41 @@
+<head>
+	<meta charset="UTF8">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<style>
+		* {
+			color: #191970;
+			transition: all 0.3s ease;
+			text-shadow: 0 0 20px #e1ffff;
+		}
+		body {
+			background-color: #87ceeb;
+		}
+		header {
+			text-align: center;
+			margin: 2cm 0;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>{{ name }}</h1>
+		<img alt="Avatar" src="{{ avatar_url }}">
+		<h2>{{ description }}</h2>
+		<p>He has AKed IOI <span class="counter">0</span> times.</p>
+		<p>他已经被您膜拜了 <span class="counter">0</span> 次。</p>
+		<button id="mobai" type="button" class="el-button el-button--primary is-plain is-round">点击膜拜</button>
+		<script>
+			var counter = 0;
+			document.getElementById("mobai").onclick = function() {
+				++counter;
+				for(let item of document.getElementsByClassName("counter")) {
+					item.innerText = counter;
+				}
+			}
+		</script>
+		<hr>
+		<p>
+			想了解 <b>akioi.cn</b> 项目？请前往 <a href="https://akioi.cn/">https://akioi.cn/</a>。
+		</p>
+	</header>
+</body>
