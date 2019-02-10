@@ -101,7 +101,7 @@ def CheckIfRepoCreated(name):
 		
 def login(name):
 	os.system("sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config".format(
-		path = os.getcwd() + '/html/' ,
+		path = os.getcwd() + '/html' ,
 		Reponame = name,
 		username = PusherAccount,
 		password = PusherPassword
