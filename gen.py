@@ -1,4 +1,5 @@
 #Github Access Build On Github API v3 
+#FLAG: QW5zd2VyOiBmbHhne01FbVNFVDBfRE9OTk9UX0tJTExfTWUhfQ==
 import requests
 import os, yaml
 import json
@@ -76,8 +77,16 @@ def getPagesURL(name):
 		PagesURL='%s.%s'%(name,Webroot)
 	return PagesURL
 
-def CreateRepo(name):
-	print('Creating Repo %s'%(name))
+def DeleteRepo(name):  #Experimental!
+    print('Deleting Repo %s......'%(name))
+    PostURL='https://api.github.com/repos/%s/%s' % (Owner,name)
+	res=requests.delete(url=PostURL,headers=headers)
+	print(res.status_code+'\n')
+	return 
+
+def CreateRepo(name,IfCreated):
+	if(IfCreated==1) DeleteRepo(name)
+	print('Creating Repo %s\n'%(name))
 	Postdata={'name' : str(name),'description' : str(data['description']), 'homepage' : str('https://%s'%(getPagesURL(name)))}
 	PostURL='https://api.github.com/orgs/%s/repos' % (Owner)
 
@@ -88,16 +97,21 @@ def CreateRepo(name):
 def CheckIfRepoCreated(name):
 	print('Checking Repo %s\n'%(name))
 	# GET repo 信息 ， 检测状态码 404 为未创建
+	# 临时解决方案：先删再建岂不美哉
 	r = requests.get(url = 'https://api.github.com/repos/%s/%s' % (Owner,name), headers = headers)
-	#print (r.status_code)
+	print (r.status_code)
 	if(r.status_code==404): # Not Created
-		CloneURL = CreateRepo(name)
+		CloneURL = CreateRepo(name,0)
 	elif(r.status_code==200):# Created
-		CloneURL = FromRequestsgetCloneURL(r)
+		#CloneURL = FromRequestsgetCloneURL(r)
+		CloneURL = CreateRepo(name,1)
 	else:
 		print('Unknown Error!\n')
 		print(r.text+'\n')
+		
+	
 	return CloneURL
+
 		
 
 
