@@ -139,6 +139,7 @@ if __name__ == '__main__':
 		data = yaml.load(text)
 		data['short_name'] = filename.split('.')[0]
 		print('Processing %s , Shortname : %s'%(filename,data['short_name']))
+		CloneRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
 			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
