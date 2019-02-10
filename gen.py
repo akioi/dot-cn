@@ -97,10 +97,10 @@ def CheckIfRepoCreated(name):
 	else:
 		print('Unknown Error!\n')
 		print(r.text+'\n')
-	return (1 if r.status_code==200 else 0),CloneURL
+	return CloneURL
 
 def CloneRepo(name):
-	flag,CloneURL = CheckIfRepoCreated(name)
+	CloneURL = CheckIfRepoCreated(name)
 	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
 	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
@@ -110,20 +110,19 @@ def CloneRepo(name):
 		password = PusherPassword,
 		CURL = CloneURL,
 	))
-	return flag
 
 
 
 
-def deploy(name,flag):   # build pages at the moment?
+def deploy(name):   # build pages at the moment?
 	print('Deploying %s\n'%(name))
-	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' && git config user.name '{Account}' && git add . && git commit -m 'Update Pages'{check} && git branch gh-pages && git push origin gh-pages -f > secret.txt ".format(
+	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' && git config user.name '{Account}' && git add . && git commit -m 'Update Pages' && git branch -D gh-pages".format(
 		path = os.getcwd() + '/html/%s' % name,
 		Account = PusherAccount,
 		Email = PusherEmail,
-		pagesURL = getPagesURL(name),
-		check = ' && git branch -D gh-pages' if flag else ''
+		pagesURL = getPagesURL(name)
 	))
+	os.system("git branch gh-pages && git push origin gh-pages -f > secret.txt")
 	RequestBuild(name)
 
 
@@ -141,11 +140,10 @@ if __name__ == '__main__':
 		data['short_name'] = filename.split('.')[0]
 		print('Processing %s , Shortname : %s'%(filename,data['short_name']))
 		Cleanup()
-		flag = CloneRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
 			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
 			print(load(text,data))
-		deploy(data['short_name'],flag)
+		deploy(data['short_name'])
 		
 #CheckIfRepoCreated(input())
