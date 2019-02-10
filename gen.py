@@ -1,5 +1,4 @@
 #Github Access Build On Github API v3 
-#FLAG: QW5zd2VyOiBmbHhne01FbVNFVDBfRE9OTk9UX0tJTExfTWUhfQ==
 import requests
 import os, yaml
 import json
@@ -76,16 +75,16 @@ def getPagesURL(name):
 	else:
 		PagesURL='%s.%s'%(name,Webroot)
 	return PagesURL
-
 def DeleteRepo(name):  #Experimental!
     print('Deleting Repo %s......'%(name))
     PostURL='https://api.github.com/repos/%s/%s' % (Owner,name)
-	res=requests.delete(url=PostURL,headers=headers)
-	print(res.status_code+'\n')
-	return 
+    res=requests.delete(url=PostURL,headers=headers)
+    print(res.status_code+'\n')
+
 
 def CreateRepo(name,IfCreated):
-	if(IfCreated==1) DeleteRepo(name)
+	if(IfCreated==1) :
+		DeleteRepo(name)
 	print('Creating Repo %s\n'%(name))
 	Postdata={'name' : str(name),'description' : str(data['description']), 'homepage' : str('https://%s'%(getPagesURL(name)))}
 	PostURL='https://api.github.com/orgs/%s/repos' % (Owner)
