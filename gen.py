@@ -79,7 +79,7 @@ def DeleteRepo(name):  #Experimental!
     print('Deleting Repo %s......'%(name))
     PostURL='https://api.github.com/repos/%s/%s' % (Owner,name)
     res=requests.delete(url=PostURL,headers=headers)
-    print(res.status_code+'\n')
+    print(str(res.status_code) +'\n')
 
 
 def CreateRepo(name,IfCreated):
