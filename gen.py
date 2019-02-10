@@ -98,21 +98,16 @@ def CheckIfRepoCreated(name):
 		print('Unknown Error!\n')
 		print(r.text+'\n')
 	return (1 if r.status_code==200 else 0),CloneURL
-		
-def login(name):
-	os.system("sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config".format(
-		path = os.getcwd() + '/html' ,
-		Reponame = name,
-		username = PusherAccount,
-		password = PusherPassword
-	))
 
 def CloneRepo(name):
 	flag,CloneURL = CheckIfRepoCreated(name)
 	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git clone {CURL}" .format(   #Only Support Linux :(
+	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
+		Reponame = name,
+		username = PusherAccount,
+		password = PusherPassword,
 		CURL = CloneURL,
 	))
 	return flag
@@ -145,7 +140,6 @@ if __name__ == '__main__':
 		data = yaml.load(text)
 		data['short_name'] = filename.split('.')[0]
 		print('Processing %s , Shortname : %s'%(filename,data['short_name']))
-		login(data['short_name'])
 		Cleanup()
 		flag = CloneRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
