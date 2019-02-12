@@ -103,7 +103,7 @@ def CloneRepo(name):
 	CloneURL = CheckIfRepoCreated(name)
 	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
+	os.system("cd {path} && git clone -b gh-pages {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
 		Reponame = name,
 		username = PusherAccount,
