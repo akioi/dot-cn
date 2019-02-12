@@ -108,7 +108,7 @@ def PrepareForRepo(name):
 		RURL = RemoteURL
 	))
 	os.system("sed -i 's/github.com/{username}:{password}@github.com/g' {path}.git/config" .format(
-		path = os.getcwd() + '/html/' ,
+		path = os.getcwd() + '/' ,
 		username = PusherAccount,
 		password = PusherPassword
 	))
