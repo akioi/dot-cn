@@ -125,7 +125,7 @@ def deploy(name):   # build pages at the moment?
 		pagesURL = getPagesURL(name)
 	))
 	os.system("git branch gh-pages")
-	os.system("git push origin gh-pages -f > secret.txt")
+	os.system("git push origin gh-pages -f > secret.txt && cd ../")
 	RequestBuild(name)
 
 
