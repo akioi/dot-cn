@@ -144,7 +144,7 @@ if __name__ == '__main__':
 		PrepareForRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
-			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
+			write_file(load(text, data), 'html/%s' % filename)
 			print(load(text,data))
 		deploy(data['short_name'])
 		
