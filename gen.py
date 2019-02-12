@@ -103,12 +103,12 @@ def PrepareForRepo(name):
 	RemoteURL = CheckIfRepoCreated(name)
 	print('Preparing for %s \n'%(RemoteURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git init && git remote add origin {RURL}" .format(   #Only Support Linux :(
+	os.system("cd {path} && git init && git remote add origin {RURL} && cd ../" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
 		RURL = RemoteURL
 	))
 	os.system("sed -i 's/github.com/{username}:{password}@github.com/g' {path}.git/config" .format(
-		path = os.getcwd() + '/' ,
+		path = os.getcwd() + '/html/' ,
 		username = PusherAccount,
 		password = PusherPassword
 	))
