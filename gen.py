@@ -103,7 +103,7 @@ def CloneRepo(name):
 	CloneURL = CheckIfRepoCreated(name)
 	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git clone -b gh-pages {CURL} ./" .format(   #Only Support Linux :(
+	os.system("cd {path} && git clone -b gh-pages {CURL}" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
 		CURL = CloneURL
 	))
