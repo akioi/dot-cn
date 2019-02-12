@@ -124,7 +124,8 @@ def deploy(name):   # build pages at the moment?
 		Email = PusherEmail,
 		pagesURL = getPagesURL(name)
 	))
-	os.system("git checkout -b gh-pages && git push origin gh-pages -f > secret.txt")
+	os.system("git branch gh-pages")
+	os.system("git push origin gh-pages -f > secret.txt")
 	RequestBuild(name)
 
 
