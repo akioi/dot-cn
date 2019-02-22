@@ -98,17 +98,17 @@ def CheckIfRepoCreated(name):
 		print('Unknown Error!\n')
 		print(r.text+'\n')
 	return CloneURL
+		
 
-def PrepareForRepo(name):
-	RemoteURL = CheckIfRepoCreated(name)
-	print('Preparing for %s \n'%(RemoteURL))
+
+def CloneRepo(name):
+	CloneURL = CheckIfRepoCreated(name)
+	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git init && git remote add origin {RURL} && cd ../" .format(   #Only Support Linux :(
+	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
 		path = os.getcwd() + '/html/' ,
-		RURL = RemoteURL
-	))
-	os.system("sed -i 's/github.com/{username}:{password}@github.com/g' {path}.git/config" .format(
-		path = os.getcwd() + '/html/' ,
+		CURL = CloneURL,
+		Reponame = name,
 		username = PusherAccount,
 		password = PusherPassword
 	))
@@ -118,14 +118,12 @@ def PrepareForRepo(name):
 
 def deploy(name):   # build pages at the moment?
 	print('Deploying %s\n'%(name))
-	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' && git config user.name '{Account}' && git add . && git commit -m 'Update Pages'".format(
-		path = os.getcwd() + '/html/' ,
+	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update' && git remote rm gh-pages && git checkout -b gh-pages && git push && git push origin gh-pages --force > secret.txt ".format(
+		path = os.getcwd() + '/html/%s' % name,
 		Account = PusherAccount,
 		Email = PusherEmail,
 		pagesURL = getPagesURL(name)
 	))
-	os.system("git branch gh-pages")
-	os.system("git push origin gh-pages -f > secret.txt && cd ../")
 	RequestBuild(name)
 
 
@@ -135,19 +133,17 @@ def Cleanup():
 
 if __name__ == '__main__':
 
-	#mkdir(os.getcwd() + '/html/')
+	mkdir(os.getcwd() + '/html/')
 	#LoginGithub()
 	for filename in os.listdir('src'):
 		text = read_file('src/%s' % filename)
 		data = yaml.load(text)
 		data['short_name'] = filename.split('.')[0]
 		print('Processing %s , Shortname : %s'%(filename,data['short_name']))
-		Cleanup()
-		PrepareForRepo(data['short_name'])
+		CloneRepo(data['short_name'])
 		for filename in os.listdir('themes/%s' % data['theme']):
 			text = read_file('themes/%s/%s' % (data['theme'], filename))
-			write_file(load(text, data), 'html/%s' % filename)
-			print(load(text,data))
+			write_file(load(text, data), 'html/%s/%s' % (data['short_name'], filename))
 		deploy(data['short_name'])
 		
 #CheckIfRepoCreated(input())
