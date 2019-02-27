@@ -103,22 +103,25 @@ def CheckIfRepoCreated(name):
 
 def CloneRepo(name):
 	CloneURL = CheckIfRepoCreated(name)
-	print('Cloning %s \n'%(CloneURL))
+#	print('Cloning %s \n'%(CloneURL))
 	mkdir(os.getcwd() + '/html/')
-	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
-		path = os.getcwd() + '/html/' ,
-		CURL = CloneURL,
-		Reponame = name,
-		username = PusherAccount,
-		password = PusherPassword
-	))
+#	os.system("cd {path} && git clone {CURL} && sed -i 's/github.com/{username}:{password}@github.com/g' {path}/{Reponame}/.git/config" .format(   #Only Support Linux :(
+#		path = os.getcwd() + '/html/' ,
+#		CURL = CloneURL,
+#		Reponame = name,
+#		username = PusherAccount,
+#		password = PusherPassword
+#	))
 
 
 
 
 def deploy(name):   # build pages at the moment?
 	print('Deploying %s\n'%(name))
-	os.system("git config --global push.default matching && cd {path} && echo {pagesURL} > ./CNAME && git config user.email '{Email}' &&  git config user.name '{Account}' && git add . && git commit -m 'update' && git remote rm gh-pages && git checkout -b gh-pages && git push && git push origin gh-pages --force > secret.txt ".format(
+	os.system("git config --global push.default matching && cd {path} && mkdir ./temp/ && cd ./temp/ && git init && echo {pagesURL} > ./CNAME && git config --global user.email '{Email}' &&  git config --global user.name '{Account}' && git remote add origin https://{Account}:{password}@github.com/{owner}/{Reponame}.git && git pull origin gh-pages && rm -rf ./* && cp -f ../* ./  && git add --all . && git commit -m 'Update Pages' && git push --quiet --force origin HEAD:gh-pages ".format(
+		Reponame = name,
+		password = PusherPassword,
+		owner = Owner,
 		path = os.getcwd() + '/html/%s' % name,
 		Account = PusherAccount,
 		Email = PusherEmail,
